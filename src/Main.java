@@ -39,7 +39,7 @@ public class Main {
             public void actionPerformed(ActionEvent actionEvent) {
                 String msg = enBox.getText();
                 encryptor.setMessage(msg);
-                String enc = encryptor.getEncrypted();
+                String enc = encryptor.getEncryptedString();
 
                 decBox.setText(enc);
             }
@@ -50,7 +50,7 @@ public class Main {
             public void actionPerformed(ActionEvent actionEvent) {
                 String msg = enBox.getText();
                 encryptor.setMessage(msg);
-                String dec = encryptor.getDecrypted();
+                String dec = encryptor.getDecryptedString();
 
                 decBox.setText(dec);
             }

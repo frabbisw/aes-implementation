@@ -12,7 +12,9 @@ public class MsgEnc {
     public void setMessage(String str)
     {
         while (str.length()%16!=0)
+        {
             str+=" ";
+        }
 
         blocks = new Block[(int) Math.ceil((double)str.length()/blockSize)];
 
@@ -21,7 +23,11 @@ public class MsgEnc {
             blocks[i]=new Block(str.substring(i*blockSize, (i+1)*blockSize));
         }
     }
-    public String getEncrypted()
+    public void setBytes(byte [] bytes)
+    {
+        setMessage(new String(bytes));
+    }
+    public String getEncryptedString()
     {
         String ret="";
         for(Block block : blocks)
@@ -32,7 +38,11 @@ public class MsgEnc {
 
         return ret;
     }
-    public String getDecrypted()
+    public byte [] getEncryptedBytes()
+    {
+        return getEncryptedString().getBytes();
+    }
+    public String getDecryptedString()
     {
         String ret="";
         for(Block block : blocks)
@@ -42,6 +52,10 @@ public class MsgEnc {
         }
 
         return ret;
+    }
+    public byte [] getDecryptedBytes()
+    {
+        return getDecryptedString().getBytes();
     }
     public void printBlock()
     {
