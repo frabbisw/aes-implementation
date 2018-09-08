@@ -40,6 +40,8 @@ public class AES {
         STable.setEncryptionMode();
         multiplier.setEncryptionMode();
 
+        block.xor(key.retrieveMainKey());
+
         for(int i=0; i<numberOfRound; i++)
         {
             shiftRows();
@@ -64,6 +66,7 @@ public class AES {
             mixColum();
             shiftRows();
         }
+        block.xor(key.retrieveMainKey());
 
         return block.toString();
     }
