@@ -3,17 +3,37 @@ public class MsgEnc {
     Key key;
     SubTable table;
     final int blockSize=16;
+    char padding=0;
 
     public MsgEnc()
     {
         key=new Key(10);
         table=new SubTable(blockSize);
     }
-    public void setMessage(String str)
+    public void setNormalMessage(String str)
     {
+        padding=0;
         while (str.length()%16!=0)
+        {
             str+=" ";
+            padding++;
+        }
 
+        prepareMessage(str);
+    }
+    public void setEncryptedMessage(String str)
+    {
+        String b = str.substring(1, str.length());
+
+        padding=str.charAt(0);
+        padding=(char) (padding & (char) 0xf);
+
+        //System.out.println(padding+" "+b);
+
+        prepareMessage(b);
+    }
+    public void prepareMessage(String str)
+    {
         blocks = new Block[(int) Math.ceil((double)str.length()/blockSize)];
 
         for(int i=0; i<blocks.length; i++)
@@ -21,7 +41,11 @@ public class MsgEnc {
             blocks[i]=new Block(str.substring(i*blockSize, (i+1)*blockSize));
         }
     }
-    public String getEncrypted()
+    public void setBytes(byte [] bytes)
+    {
+        setNormalMessage(new String(bytes));
+    }
+    public String getEncryptedString()
     {
         String ret="";
         for(Block block : blocks)
@@ -30,9 +54,13 @@ public class MsgEnc {
             ret+=aes.getEncrypted();
         }
 
-        return ret;
+        return padding+ret;
     }
-    public String getDecrypted()
+    public byte [] getEncryptedBytes()
+    {
+        return getEncryptedString().getBytes();
+    }
+    public String getDecryptedString()
     {
         String ret="";
         for(Block block : blocks)
@@ -41,7 +69,11 @@ public class MsgEnc {
             ret+=aes.getDecrypted();
         }
 
-        return ret;
+        return ret.substring(0,ret.length()-padding);
+    }
+    public byte [] getDecryptedBytes()
+    {
+        return getDecryptedString().getBytes();
     }
     public void printBlock()
     {

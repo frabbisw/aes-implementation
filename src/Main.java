@@ -38,8 +38,8 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String msg = enBox.getText();
-                encryptor.setMessage(msg);
-                String enc = encryptor.getEncrypted();
+                encryptor.setNormalMessage(msg);
+                String enc = encryptor.getEncryptedString();
 
                 decBox.setText(enc);
             }
@@ -49,8 +49,8 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String msg = enBox.getText();
-                encryptor.setMessage(msg);
-                String dec = encryptor.getDecrypted();
+                encryptor.setEncryptedMessage(msg);
+                String dec = encryptor.getDecryptedString();
 
                 decBox.setText(dec);
             }
