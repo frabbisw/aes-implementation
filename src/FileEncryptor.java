@@ -38,45 +38,49 @@ public class FileEncryptor {
 
         encrypt.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                byte [] fileBytes = null;
-                File file = new File(urlField.getText());
+            public void actionPerformed(ActionEvent actionEvent){
                 try {
-                    fileBytes = Files.readAllBytes(file.toPath());
-                    encryptor.setBytes(fileBytes);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    File file=new File(urlField.getText());
 
-                try (FileOutputStream fos = new FileOutputStream(urlField.getText()))
-                {
-                    fos.write(encryptor.getEncryptedBytes());
-                    System.out.println("Encrypted");
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    byte [] bytes = Files.readAllBytes(file.toPath());
+                    String msg = new String(bytes);
+
+                    encryptor.setNormalMessage(msg);
+                    String ss = encryptor.getEncryptedString();
+
+                    bytes = ss.getBytes();
+
+                    FileOutputStream fos = new FileOutputStream(file);
+                    fos.write(bytes);
+                    fos.close();
+
+                    System.out.println(ss);
                 }
+                catch (Exception e) {}
             }
         });
 
         decrypt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                byte [] fileBytes = null;
-                File file = new File(urlField.getText());
                 try {
-                    fileBytes = Files.readAllBytes(file.toPath());
-                    encryptor.setBytes(fileBytes);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    File file=new File(urlField.getText());
 
-                try (FileOutputStream fos = new FileOutputStream(urlField.getText()))
-                {
-                    fos.write(encryptor.getDecryptedBytes());
-                    System.out.println("Decrypted");
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    byte [] bytes = Files.readAllBytes(file.toPath());
+                    String msg = new String(bytes);
+
+                    encryptor.setEncryptedMessage(msg);
+                    String ss = encryptor.getDecryptedString();
+
+                    bytes = ss.getBytes();
+
+                    FileOutputStream fos = new FileOutputStream(file);
+                    fos.write(bytes);
+                    fos.close();
+
+                    System.out.println(ss);
                 }
+                catch (Exception e) {}
             }
         });
     }
